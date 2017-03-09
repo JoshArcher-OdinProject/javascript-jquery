@@ -1,0 +1,24 @@
+/* Some test text */
+
+main {
+    max-width:55em;
+    margin:auto;
+}
+
+.row {
+    display:flex;
+    margin:0;
+    padding:0;
+}
+
+.project-grid-container {
+    border: 1px solid #333;
+    width: 800px;
+    height: 800px;
+}
+
+.grid-square {
+    background-color:red;
+    float: left;
+}
+
