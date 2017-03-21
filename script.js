@@ -1,24 +1,96 @@
-// This builds the grid by building the number of rows and then adding
+// Define variables in this section
+// ================================
+
+// The number of squares per side of the grid at initial build
+var squaresPerSide = 30
+var randomColour = false
+
+// The needs to be defined as null to enable resetting the grid and retain user
+// defined grid size. If grid is reset before user defines a size without this
+// declaration newGridSize is simply undefined. 
+var newGridSize = null
+
+// Call functions in this section
+// ==============================
+
+// Builds initial grid at predefined size
+buildGrid(squaresPerSide);
+
+// Define button behaviour in this section
+// =======================================
+
+// Select drawing colour
+$("#selectColour").click(selectColour);
+
+// Select grid size
+$("#gridSize").click(changeGridSize);
+
+// Reset the grid
+$('#resetGrid').click(resetGrid);
+
+// Define function definitions in this section
+// ===========================================
+
+// Build the grid by building the number of rows and then adding
 // the same number of squares to the rows. This leaves you with a square grid.
 function buildGrid (squaresPerSide) {
+    // Remove all elements first to give a clean container 
+    $('.project-grid-container').children().remove();
+
     // Build the number of rows (how tall grid is)
     var $tempRow = $('<div class="row"></div>');
     var $tempContainer = $('.project-grid-container');
-    for (var i=0; i <= squaresPerSide; i++) {
+    for (var i=0; i < squaresPerSide; i++) {
         $tempRow.clone().appendTo($tempContainer);
-    };
+    }
+    
     // Fill the rows with squares (how wide the grid is)
     var $tempSquare = $('<div class="grid-square"></div>');
     var $tempBuiltRow = $('.row');
-    for (var i=0; i <= squaresPerSide; i++) {
+    for (var i=0; i < squaresPerSide; i++) {
         $tempSquare.clone().appendTo($tempBuiltRow);
-    };
+    }
+    
     // Specify the size of the squares based on how many there are
     var squareSize = $('.project-grid-container').width() / squaresPerSide;
     $('.grid-square').css({
-        'width':squareSize,
-        'height': squareSize,
-    });
+        'width':squareSize + 'px',
+        'height':squareSize + 'px',
+    })
+
+    // Call drawLine to make sure it's active
+    drawLine();
 }
-var squaresPerSide = 400
-buildGrid(squaresPerSide);
+
+// Detect a mouseover event and change the square colour to black
+function drawLine () {
+    $('.grid-square').mouseover(function() {
+        $(this).css('background-color', 'black');
+    })
+}
+
+// Reset the grid. Delete all squares, rebuild and activate draw line
+function resetGrid () {
+    if ( newGridSize !== null) {
+        buildGrid(newGridSize);
+    }
+    else {
+        buildGrid(squaresPerSide);
+    }
+}
+
+// Change the size of the grid by accepting user input
+function changeGridSize () {
+    newGridSize = prompt('Enter number of squares per side.');
+    if ( newGridSize == null || newGridSize == '' || isNaN(newGridSize) == true ) {
+        alert("Erm...that's not a number. Please enter a number!");
+        }
+    else if (newGridSize > 400) {
+        alert("Yikes, that number is too large, you'll crash the browser! Pick something less than 400.")
+        }
+    else {
+        buildGrid(newGridSize);
+    }
+}
+
+
